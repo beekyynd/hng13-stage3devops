@@ -298,13 +298,18 @@ docker-compose exec nginx tail -1 /var/log/nginx/access.log
 - **Log volume** is shared between Nginx and watcher
 - **Watcher restarts** automatically if it crashes
 - 
-## Screenshots of Error, Failover and Nginx Log
+## 📸 Screenshots of Error, Failover, and Nginx Log
 
-<img width="1347" height="198" alt="failover" src="https://krecnoittprojectservices.com/hng/failover.jpg" />
+Below are example screenshots showing Slack alerts and Nginx logs during a Blue-Green failover test.
 
-<img width="1347" height="198" alt="error" src="https://krecnoittprojectservices.com/hng/error1.jpg" />
+### 🔄 Failover Alert
+![Failover Alert](https://krecnoittprojectservices.com/hng/failover.jpg)
 
-<img width="1347" height="198" alt="log" src="https://krecnoittprojectservices.com/hng/log.png" />
+### ⚠️ Error Rate Alert
+![Error Rate Alert](https://krecnoittprojectservices.com/hng/error1.jpg)
+
+### 📜 Nginx Log Output
+![Nginx Logs](https://krecnoittprojectservices.com/hng/log.png)
 
 
 ## License
