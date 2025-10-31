@@ -19,6 +19,7 @@ last_pool = None
 last_alert_pool = None
 request_window = deque(maxlen=WINDOW_SIZE)
 last_alert_time = {'failover': 0, 'error_rate': 0}
+line_counter = 0
 
 # Matches pool, release, upstream_status, upstream_addr, request_time, upstream_response_time
 LOG_PATTERN = re.compile(
@@ -105,6 +106,7 @@ def check_error_rate():
 print("[START] Log watcher starting...")
 print(f"[CONFIG] Threshold={ERROR_RATE_THRESHOLD}%, Window={WINDOW_SIZE}, Cooldown={ALERT_COOLDOWN_SEC}s")
 
+# Wait for log file
 while not os.path.exists(LOG_FILE):
     print(f"[WAIT] Waiting for {LOG_FILE}...")
     time.sleep(2)
@@ -125,13 +127,25 @@ try:
 
         pool, release, upstream_status, upstream_addr, request_time, upstream_response_time = match.groups()
 
-        # Take the last status code for error rate
+        # === Enhanced 5xx detection ===
+        statuses = [s.strip() for s in upstream_status.split(',') if s.strip() != '-']
+        has_5xx = any(s.isdigit() and s.startswith('5') for s in statuses)
+
         try:
-            status = int(upstream_status.split(',')[-1].strip())
+            status = 500 if has_5xx else int(statuses[-1]) if statuses else 0
         except ValueError:
             status = 0
 
+        # Store and analyze
         request_window.append(status)
+        line_counter += 1
+
+        # Print live error rate every 20 processed requests
+        if line_counter % 20 == 0:
+            errors = sum(1 for s in request_window if s >= 500)
+            rate = (errors / len(request_window)) * 100 if request_window else 0
+            print(f"[LIVE] Processed={len(request_window)} | Errors={errors} | Rate={rate:.2f}%")
+
         check_failover(pool, release, upstream_status, upstream_addr, request_time, upstream_response_time)
         check_error_rate()
 
