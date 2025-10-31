@@ -300,11 +300,11 @@ docker-compose exec nginx tail -1 /var/log/nginx/access.log
 - 
 ## Screenshots of Error, Failover and Nginx Log
 
-![failover](https://github.com/user-attachments/assets/27aa8794-e86e-4b3b-a9ac-44e448ad5b51)
+<img width="1347" height="198" alt="failover" src="https://krecnoittprojectservices.com/hng/failover.jpg" />
 
-![error1](https://github.com/user-attachments/assets/6bc4a2d3-900f-4624-8557-7208b6ee201a)
+<img width="1347" height="198" alt="error" src="https://krecnoittprojectservices.com/hng/error1.jpg" />
 
-<img width="1347" height="198" alt="log" src="https://github.com/user-attachments/assets/9d0069b1-ae69-4065-9cb6-d211be21647e" />
+<img width="1347" height="198" alt="log" src="https://krecnoittprojectservices.com/hng/log.png" />
 
 
 ## License
